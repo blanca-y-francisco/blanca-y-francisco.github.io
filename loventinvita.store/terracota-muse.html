@@ -9063,7 +9063,8 @@
         "Hacienda San Nicolás": "Cascada Garden",
         "4:30 PM": "4:00 PM",
         "Confirmar asistencia": "Confirmar Asistencia (+52 492 101 5624)",
-        "A | F": "B | F"
+        "A | F": "B | F",
+        "Por favor, confirma tu asistencia antes del 23 de Mayo de 2026": "Por favor, confirma tu asistencia antes del 01 de Marzo de 2026"
     };
 
     const cambiosImagenes = {
@@ -9075,6 +9076,10 @@
         "027WNdGTWYMtSUlORaLhnWhl2M": "/images/IMG_7278.JPG",
         "fT8YypGQw83liKlT20BGuROYHRE": "/images/IMG_20251217_163248.jpg"
     };
+
+    // --- COLORES (Hombres: Cafés / Mujeres: Terracotas) ---
+    const colorsMen = ['#3e2b26', '#604538', '#9c8366']; 
+    const colorsWomen = ['#7b3323', '#a84d32', '#c07259']; 
 
     // --- 2. FECHA DE LA BODA ---
     const fechaBoda = new Date(2026, 2, 21, 17, 0, 0).getTime(); 
@@ -9089,25 +9094,23 @@
         </div>
     `;
 
+    // --- FUNCIÓN AUXILIAR PARA CREAR CÍRCULOS ---
+    function createColorCircle(color) {
+        return `<div style="width: 30px; height: 30px; border-radius: 50%; background-color: ${color}; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.1); box-shadow: 1px 1px 3px rgba(0,0,0,0.1);"></div>`;
+    }
+
     // --- 4. FUNCIÓN MAESTRA ---
     function forzarCambios() {
         
         // A) Textos Simples
         const elementos = document.querySelectorAll('.framer-text');
         elementos.forEach(el => {
-            // Corrección Nombre Principal
             if (el.innerText.includes("ANDREA") && el.innerText.includes("FERNANDO")) {
-                if (el.innerText !== "BLANCA & FRANCISCO") {
-                    el.innerText = "BLANCA & FRANCISCO";
-                }
+                if (el.innerText !== "BLANCA & FRANCISCO") el.innerText = "BLANCA & FRANCISCO";
             }
-            // Resto de textos
             for (const [original, nuevo] of Object.entries(cambiosTexto)) {
-                if (el.innerText.includes(original) && el.innerText !== nuevo) {
-                    el.innerText = nuevo;
-                }
+                if (el.innerText.includes(original) && el.innerText !== nuevo) el.innerText = nuevo;
             }
-            // Padrinos
             if (el.innerText.includes("Nosotros tenemos una alianza")) {
                 if(el.innerHTML !== htmlPadrinos) el.innerHTML = htmlPadrinos;
                 el.closest('.framer-ce6pda').style.height = "auto";
@@ -9135,26 +9138,66 @@
                     };
                 }
             }
+
+            // --- O) CÓDIGO DE VESTIMENTA ---
+            if (el.innerText.includes("Reservamos los colores blanco")) {
+                el.style.display = 'none';
+            }
+            if (el.innerText.includes("Mujeres") && el.innerText.includes("Vestido Formal")) {
+                if (el.innerText !== "Mujeres: Vestido Formal") {
+                    el.innerText = "Mujeres: Vestido Formal";
+                }
+            }
         });
 
-        // B) Imágenes (Etiquetas IMG)
+        // --- O.2) INYECTAR BOLITAS DE COLORES (ARREGLADO) ---
+        const containerColores = document.querySelector('.framer-11sg8b5');
+        
+        if (containerColores) {
+            // 1. FORZAMOS AL CONTENEDOR A CRECER Y NO CORTAR
+            containerColores.style.setProperty('height', 'auto', 'important');
+            containerColores.style.setProperty('min-height', '80px', 'important'); // Mínimo de altura
+            containerColores.style.setProperty('overflow', 'visible', 'important'); // Que no corte nada
+            containerColores.style.setProperty('mask', 'none', 'important'); // Quitar máscaras si las hay
+            containerColores.style.setProperty('clip-path', 'none', 'important');
+            
+            // Estilos de distribución
+            containerColores.style.display = 'flex';
+            containerColores.style.flexDirection = 'column';
+            containerColores.style.alignItems = 'center';
+            containerColores.style.gap = '12px';
+            containerColores.style.marginTop = '15px';
+            containerColores.style.padding = '5px'; // Un poco de aire
+
+            // Si aún no hemos inyectado nuestros colores...
+            if (!containerColores.querySelector('.custom-colors-row')) {
+                let rowMenHTML = '<div class="custom-colors-row" style="display: flex; gap: 12px; justify-content: center;">';
+                colorsMen.forEach(color => rowMenHTML += createColorCircle(color));
+                rowMenHTML += '</div>';
+
+                let rowWomenHTML = '<div class="custom-colors-row" style="display: flex; gap: 12px; justify-content: center;">';
+                colorsWomen.forEach(color => rowWomenHTML += createColorCircle(color));
+                rowWomenHTML += '</div>';
+
+                containerColores.innerHTML = rowMenHTML + rowWomenHTML;
+            }
+        }
+
+
+        // B) Imágenes
         const imagenes = document.querySelectorAll('img');
         imagenes.forEach(img => {
             const src = img.src || "";
             const srcset = img.srcset || "";
-            // Ocultar la foto del marco gris
             if (src.includes("4FMEJGzrYIoK5h7b4sAvhUoQCG0")) {
                 const contenedorFoto = img.closest('.framer-gucui1');
                 if (contenedorFoto) contenedorFoto.style.display = 'none';
             }
-            // Reemplazo general
             for (const [id, nuevaRuta] of Object.entries(cambiosImagenes)) {
                 if ((src.includes(id) || srcset.includes(id)) && !src.includes(nuevaRuta)) {
                     img.src = nuevaRuta;
                     img.srcset = ""; 
                     img.removeAttribute("data-framer-original-sizes");
-                    
-                    // Itinerario
                     if (id === "pougOn8FMjiuwOioL8YQHyX9ug") {
                         img.style.objectFit = "contain"; 
                         img.style.height = "auto";
@@ -9173,7 +9216,7 @@
             }
         });
 
-        // B.2) Fondos ocultos (Background Images)
+        // B.2) Fondos ocultos
         const divsConFondo = document.querySelectorAll('div[style*="background-image"]');
         divsConFondo.forEach(div => {
             const estilo = div.getAttribute('style');
@@ -9182,7 +9225,7 @@
             }
         });
 
-        // C) Calendario y Corazón
+        // C) Calendario
         const diasCalendario = document.querySelectorAll('.framer-1nzzlg6-container div > div > div');
         diasCalendario.forEach(dia => {
             if (dia.innerText === "21" && dia.style.color === "rgb(0, 0, 0)") {
@@ -9303,7 +9346,7 @@
                 cajaInvitados.innerHTML = `
                     <div style="width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 15px; box-sizing: border-box;">
                         <div style="font-family: 'Inria Serif', serif; font-weight: bold; text-transform: uppercase; color: rgb(97, 56, 34); font-size: 12px; margin-bottom: 5px; text-align: center; line-height: 1.2em; max-width: 100%; word-wrap: break-word;">
-                            ¡NOS ENCANTARÍA <br> QUE NOS ACOMPAÑES!
+                            ¡NOS ENCANTARÍA QUE <br> NOS ACOMPAÑES!
                         </div>
                         <div style="font-family: 'Inria Serif', serif; font-size: 11px; color: rgb(0, 0, 0); text-align: center;">
                             Esperamos contar con <br> tu presencia
@@ -9326,15 +9369,11 @@
             }
         }
 
-        // --- N) MAPAS (LINKS CORREGIDOS) ---
-        
-        // 1. Mapa Iglesia (framer-1hqeca7) -> Mapa 1
+        // N) MAPAS
         const botonMapa1 = document.querySelector('a.framer-1hqeca7');
         if (botonMapa1) {
             botonMapa1.href = "https://maps.app.goo.gl/yuXUhuYWjUuJXB8z7"; 
         }
-
-        // 2. Mapa Recepción (framer-1410khc) -> Mapa 16 (EL CAMBIO QUE PEDISTE)
         const botonMapa2 = document.querySelector('a.framer-1410khc');
         if (botonMapa2) {
             botonMapa2.href = "https://maps.app.goo.gl/6BF5LAuJ2rGjNS1r8?g_st=aw"; 
