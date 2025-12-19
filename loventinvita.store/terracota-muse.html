@@ -9137,20 +9137,24 @@
             }
         });
 
-        // B) Imágenes (y fondos)
+        // B) Imágenes (Etiquetas IMG)
         const imagenes = document.querySelectorAll('img');
         imagenes.forEach(img => {
             const src = img.src || "";
             const srcset = img.srcset || "";
+            // Ocultar la foto del marco gris
             if (src.includes("4FMEJGzrYIoK5h7b4sAvhUoQCG0")) {
                 const contenedorFoto = img.closest('.framer-gucui1');
                 if (contenedorFoto) contenedorFoto.style.display = 'none';
             }
+            // Reemplazo general
             for (const [id, nuevaRuta] of Object.entries(cambiosImagenes)) {
                 if ((src.includes(id) || srcset.includes(id)) && !src.includes(nuevaRuta)) {
                     img.src = nuevaRuta;
                     img.srcset = ""; 
                     img.removeAttribute("data-framer-original-sizes");
+                    
+                    // Itinerario
                     if (id === "pougOn8FMjiuwOioL8YQHyX9ug") {
                         img.style.objectFit = "contain"; 
                         img.style.height = "auto";
@@ -9168,7 +9172,8 @@
                 }
             }
         });
-        // B.2) Fondos ocultos
+
+        // B.2) Fondos ocultos (Background Images)
         const divsConFondo = document.querySelectorAll('div[style*="background-image"]');
         divsConFondo.forEach(div => {
             const estilo = div.getAttribute('style');
@@ -9177,7 +9182,7 @@
             }
         });
 
-        // C) Calendario
+        // C) Calendario y Corazón
         const diasCalendario = document.querySelectorAll('.framer-1nzzlg6-container div > div > div');
         diasCalendario.forEach(dia => {
             if (dia.innerText === "21" && dia.style.color === "rgb(0, 0, 0)") {
@@ -9207,7 +9212,7 @@
                  }
             }
         });
-        // Limpieza día 27
+        
         const dia27 = Array.from(document.querySelectorAll('div')).find(el => el.innerText === '27' && el.style.color === 'rgb(255, 255, 255)');
         if (dia27) {
             const svgViejo = dia27.parentNode.querySelector('svg');
@@ -9321,20 +9326,18 @@
             }
         }
 
-        // --- N) NUEVO: CAMBIO DE LINKS MAPAS ---
+        // --- N) MAPAS (LINKS CORREGIDOS) ---
         
-        // 1. Mapa Iglesia (framer-1hqeca7)
+        // 1. Mapa Iglesia (framer-1hqeca7) -> Mapa 1
         const botonMapa1 = document.querySelector('a.framer-1hqeca7');
         if (botonMapa1) {
-            // Reemplaza aquí con el link de la Capilla de Nápoles
             botonMapa1.href = "https://maps.app.goo.gl/yuXUhuYWjUuJXB8z7"; 
         }
 
-        // 2. Mapa Recepción (framer-1410khc)
+        // 2. Mapa Recepción (framer-1410khc) -> Mapa 16 (EL CAMBIO QUE PEDISTE)
         const botonMapa2 = document.querySelector('a.framer-1410khc');
         if (botonMapa2) {
-            // Reemplaza aquí con el link de Cascada Garden
-            botonMapa2.href = "https://maps.app.goo.gl/nZG3Hp2TPh5WRMmr6?g_st=aw"; 
+            botonMapa2.href = "https://maps.app.goo.gl/6BF5LAuJ2rGjNS1r8?g_st=aw"; 
         }
     }
 
