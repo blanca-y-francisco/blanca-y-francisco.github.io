@@ -29,12 +29,12 @@
         <meta property="og:type" content="website">
         <meta property="og:title" content="Terracota Muse">
         <meta property="og:description" content="Creado por Lovent invita">
-        <meta property="og:image" content="https://framerusercontent.com/assets/frGVf1MIDTPlqxvnvyL7l3Awo.jpg">
+        <meta property="og:image" content="https://blanca-y-francisco.github.io/images/IMG_7277.PNG">
         <!-- Twitter -->
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:title" content="Terracota Muse">
         <meta name="twitter:description" content="Creado por Lovent invita">
-        <meta name="twitter:image" content="https://framerusercontent.com/assets/frGVf1MIDTPlqxvnvyL7l3Awo.jpg">
+        <meta name="twitter:image" content="https://blanca-y-francisco.github.io/images/IMG_7277.PNG">
         <style data-framer-font-css>
             /* arabic */
             @font-face {
@@ -9056,14 +9056,23 @@
         <script>
     // --- 1. CONFIGURACIÓN SIMPLE ---
     const cambiosTexto = {
-        "BLANCA ANDREA &FRANCISCO ALAN": "BLANCA ANDREA VAZQUEZ MACÍAS & FRANCISCO ALAN LÓPEZ MEDRANO",
+        // Nombres actualizados
+        "BLANCA ANDREA &FRANCISCO ALAN": "ANDREA & ALAN", 
+        "BLANCA & FRANCISCO": "ANDREA & ALAN",
+        "ANDREA Y ALAN": "ANDREA & ALAN",
+
+        // Fecha y lugares (Se mantienen igual o se ajustan si es necesario)
         "27  -  06  - 2026": "21 / MARZO / 2026",
         "Junio": "Marzo",
         "Iglesia de Santa Cruz": "Capilla de Nápoles",
         "Hacienda San Nicolás": "Cascada Garden",
         "4:30 PM": "4:00 PM",
-        "Confirmar asistencia": "Confirmar Asistencia (+52 492 101 5624)",
-        "A | F": "B | F",
+        "Confirmar asistencia": "Confirmar Asistencia", // Texto del botón
+        
+        // Iniciales actualizadas
+        "A | F": "A | A",
+        "B | F": "A | A",
+
         "Por favor, confirma tu asistencia antes del 23 de Mayo de 2026": "Por favor, confirma tu asistencia antes del 01 de Marzo de 2026"
     };
 
@@ -9077,9 +9086,15 @@
         "fT8YypGQw83liKlT20BGuROYHRE": "/images/IMG_20251217_163248.jpg"
     };
 
-    // --- COLORES (Hombres: Cafés / Mujeres: Terracotas) ---
-    const colorsMen = ['#3e2b26', '#604538', '#9c8366']; 
+    // --- COLORES (Ordenados: Mujeres primero, Hombres después) ---
+    // Terracotas para Mujeres (Darcota)
     const colorsWomen = ['#7b3323', '#a84d32', '#c07259']; 
+    // Cafés para Hombres
+    const colorsMen = ['#3e2b26', '#604538', '#9c8366']; 
+
+    // --- ENLACE FORMULARIO GOOGLE ---
+    // Reemplaza esto con el link real de tu formulario
+    const linkFormulario = "https://forms.gle/hz1Tjx7N4dQYLX2G7"; 
 
     // --- 2. FECHA DE LA BODA ---
     const fechaBoda = new Date(2026, 2, 21, 17, 0, 0).getTime(); 
@@ -9105,12 +9120,16 @@
         // A) Textos Simples
         const elementos = document.querySelectorAll('.framer-text');
         elementos.forEach(el => {
-            if (el.innerText.includes("ANDREA") && el.innerText.includes("FERNANDO")) {
-                if (el.innerText !== "BLANCA & FRANCISCO") el.innerText = "BLANCA & FRANCISCO";
-            }
+            // Lógica Nombres Principales (Para asegurar que cambie aunque el original varíe)
+            if (el.innerText.includes("ANDREA") && el.innerText.includes("FERNANDO")) el.innerText = "ANDREA & ALAN";
+            if (el.innerText === "BLANCA & FRANCISCO") el.innerText = "ANDREA & ALAN";
+
+            // Reemplazo general
             for (const [original, nuevo] of Object.entries(cambiosTexto)) {
                 if (el.innerText.includes(original) && el.innerText !== nuevo) el.innerText = nuevo;
             }
+
+            // Padrinos
             if (el.innerText.includes("Nosotros tenemos una alianza")) {
                 if(el.innerHTML !== htmlPadrinos) el.innerHTML = htmlPadrinos;
                 el.closest('.framer-ce6pda').style.height = "auto";
@@ -9139,47 +9158,64 @@
                 }
             }
 
-            // --- O) CÓDIGO DE VESTIMENTA ---
+            // --- O) CÓDIGO DE VESTIMENTA (Textos) ---
             if (el.innerText.includes("Reservamos los colores blanco")) {
                 el.style.display = 'none';
             }
+            // Texto Mujeres
             if (el.innerText.includes("Mujeres") && el.innerText.includes("Vestido Formal")) {
-                if (el.innerText !== "Mujeres: Vestido Formal") {
-                    el.innerText = "Mujeres: Vestido Formal";
+                if (el.innerText !== "Mujeres: Vestido Formal (Terracota)") {
+                    el.innerText = "Mujeres: Vestido Formal (Terracota)"; // Opcional: Agregar el color en texto
                 }
+            }
+             // Texto Hombres (Si necesitas ajustarlo también)
+            if (el.innerText.includes("Hombres") && el.innerText.includes("Traje Formal")) {
+                 // Puedes personalizarlo si quieres, ej: "Hombres: Traje Formal (Café)"
             }
         });
 
-        // --- O.2) INYECTAR BOLITAS DE COLORES (ARREGLADO) ---
+        // --- O.2) INYECTAR BOLITAS DE COLORES (NUEVO ORDEN) ---
         const containerColores = document.querySelector('.framer-11sg8b5');
         
         if (containerColores) {
-            // 1. FORZAMOS AL CONTENEDOR A CRECER Y NO CORTAR
+            // Estilos del contenedor
             containerColores.style.setProperty('height', 'auto', 'important');
-            containerColores.style.setProperty('min-height', '80px', 'important'); // Mínimo de altura
-            containerColores.style.setProperty('overflow', 'visible', 'important'); // Que no corte nada
-            containerColores.style.setProperty('mask', 'none', 'important'); // Quitar máscaras si las hay
+            containerColores.style.setProperty('min-height', '80px', 'important');
+            containerColores.style.setProperty('overflow', 'visible', 'important');
+            containerColores.style.setProperty('mask', 'none', 'important');
             containerColores.style.setProperty('clip-path', 'none', 'important');
             
-            // Estilos de distribución
             containerColores.style.display = 'flex';
             containerColores.style.flexDirection = 'column';
             containerColores.style.alignItems = 'center';
-            containerColores.style.gap = '12px';
+            containerColores.style.gap = '15px'; // Más espacio entre grupos
             containerColores.style.marginTop = '15px';
-            containerColores.style.padding = '5px'; // Un poco de aire
+            containerColores.style.padding = '5px';
 
-            // Si aún no hemos inyectado nuestros colores...
-            if (!containerColores.querySelector('.custom-colors-row')) {
-                let rowMenHTML = '<div class="custom-colors-row" style="display: flex; gap: 12px; justify-content: center;">';
-                colorsMen.forEach(color => rowMenHTML += createColorCircle(color));
-                rowMenHTML += '</div>';
+            // Inyección de HTML (Solo si no existe ya)
+            if (!containerColores.querySelector('.custom-colors-wrapper')) {
+                
+                // 1. Grupo Mujeres (Terracota) - PRIMERO
+                let htmlMujeres = `
+                    <div class="custom-colors-wrapper" style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                        <span style="font-family: 'Inria Serif', serif; font-size: 12px; color: #9E4922; font-weight: bold;">Mujeres</span>
+                        <div style="display: flex; gap: 12px; justify-content: center;">
+                            ${colorsWomen.map(c => createColorCircle(c)).join('')}
+                        </div>
+                    </div>
+                `;
 
-                let rowWomenHTML = '<div class="custom-colors-row" style="display: flex; gap: 12px; justify-content: center;">';
-                colorsWomen.forEach(color => rowWomenHTML += createColorCircle(color));
-                rowWomenHTML += '</div>';
+                // 2. Grupo Hombres (Café) - SEGUNDO
+                let htmlHombres = `
+                    <div class="custom-colors-wrapper" style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                        <span style="font-family: 'Inria Serif', serif; font-size: 12px; color: #604538; font-weight: bold;">Hombres</span>
+                        <div style="display: flex; gap: 12px; justify-content: center;">
+                             ${colorsMen.map(c => createColorCircle(c)).join('')}
+                        </div>
+                    </div>
+                `;
 
-                containerColores.innerHTML = rowMenHTML + rowWomenHTML;
+                containerColores.innerHTML = htmlMujeres + htmlHombres;
             }
         }
 
@@ -9296,17 +9332,15 @@
             if(tag.innerText === "Seg") tag.previousElementSibling.innerText = segundos;
         });
 
-        // G) Botón WhatsApp
+        // G) Botón CONFIRMACIÓN (FORMULARIO GOOGLE)
         const botonOriginal = document.querySelector('.framer-1rgynqk');
         if (botonOriginal && !botonOriginal.dataset.fixed) {
             const nuevoBoton = botonOriginal.cloneNode(true);
             nuevoBoton.style.cursor = "pointer";
             nuevoBoton.onclick = function(e) {
                 e.preventDefault(); e.stopPropagation(); 
-                const telefono = "524921015624"; 
-                const mensaje = "Hola Blanca y Francisco, quiero confirmar mi asistencia a su boda.";
-                const url = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
-                window.open(url, '_blank');
+                // AQUÍ SE ABRE EL FORMULARIO
+                window.open(linkFormulario, '_blank');
             };
             nuevoBoton.dataset.fixed = "true";
             botonOriginal.parentNode.replaceChild(nuevoBoton, botonOriginal);
@@ -9328,7 +9362,8 @@
             degradado.style.backgroundColor = 'transparent'; 
         }
         elementos.forEach(el => {
-            if (el.innerText === "B | F" || el.innerText === "21 / MARZO / 2026") {
+            // Iniciales A | A
+            if (el.innerText === "A | A" || el.innerText === "21 / MARZO / 2026") {
                 el.style.color = "#FFFFFF"; 
                 el.style.setProperty("--framer-text-color", "#FFFFFF");
                 el.style.textShadow = "2px 2px 8px rgba(0, 0, 0, 0.9)"; 
