@@ -9071,7 +9071,7 @@
         "abaLQ4Kzbz9hqZ62puuSyXfb1Y": "/images/IMG_7277.PNG",
         "w4UdLbTSO3z5JR2bGrY9Atwees": "/images/IMG_20251217_163248.jpg",
         "gMUeAqmXvPOknhruvbcVBbafq0": "/images/IMG_7277.PNG",
-        "pougOn8FMjiuwOioL8YQHyX9ug": "/images/itinerario.png",
+        "pougOn8FMjiuwOioL8YQHyX9ug": "/images/itinerario2.png",
         "027WNdGTWYMtSUlORaLhnWhl2M": "/images/IMG_7278.JPG",
         "fT8YypGQw83liKlT20BGuROYHRE": "/images/IMG_20251217_163248.jpg"
     };
@@ -9137,7 +9137,7 @@
             }
         });
 
-        // B) Imágenes
+        // B) Imágenes (y fondos)
         const imagenes = document.querySelectorAll('img');
         imagenes.forEach(img => {
             const src = img.src || "";
@@ -9168,8 +9168,16 @@
                 }
             }
         });
+        // B.2) Fondos ocultos
+        const divsConFondo = document.querySelectorAll('div[style*="background-image"]');
+        divsConFondo.forEach(div => {
+            const estilo = div.getAttribute('style');
+            if (estilo.includes("fT8YypGQw83liKlT20BGuROYHRE")) {
+                div.style.backgroundImage = `url('/images/IMG_20251217_163248.jpg')`;
+            }
+        });
 
-        // C) MOVER EL CORAZÓN (Lógica de Día 21)
+        // C) Calendario
         const diasCalendario = document.querySelectorAll('.framer-1nzzlg6-container div > div > div');
         diasCalendario.forEach(dia => {
             if (dia.innerText === "21" && dia.style.color === "rgb(0, 0, 0)") {
@@ -9199,8 +9207,7 @@
                  }
             }
         });
-        
-        // Limpieza extra del día 27 original
+        // Limpieza día 27
         const dia27 = Array.from(document.querySelectorAll('div')).find(el => el.innerText === '27' && el.style.color === 'rgb(255, 255, 255)');
         if (dia27) {
             const svgViejo = dia27.parentNode.querySelector('svg');
@@ -9210,13 +9217,13 @@
             }
         }
 
-        // D) OCULTAR SECCIONES
+        // D) Ocultar Secciones
         const seccionFrase = document.querySelector('[data-framer-name="FRASE"]');
         if (seccionFrase) seccionFrase.style.display = 'none';
         const seccionNoNinos = document.querySelector('[data-framer-name="No niños"]');
         if (seccionNoNinos) seccionNoNinos.style.display = 'none';
 
-        // E) OCULTAR ÍCONO UBICACIÓN
+        // E) Ocultar Ícono Ubicación
         const paths = document.querySelectorAll('path');
         paths.forEach(p => {
             const dAttribute = p.getAttribute('d') || "";
@@ -9226,7 +9233,7 @@
             }
         });
 
-        // F) CONTADOR
+        // F) Contador
         const ahora = new Date().getTime();
         const distancia = fechaBoda - ahora;
         const dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
@@ -9241,7 +9248,7 @@
             if(tag.innerText === "Seg") tag.previousElementSibling.innerText = segundos;
         });
 
-        // G) BOTÓN WHATSAPP
+        // G) Botón WhatsApp
         const botonOriginal = document.querySelector('.framer-1rgynqk');
         if (botonOriginal && !botonOriginal.dataset.fixed) {
             const nuevoBoton = botonOriginal.cloneNode(true);
@@ -9257,7 +9264,7 @@
             botonOriginal.parentNode.replaceChild(nuevoBoton, botonOriginal);
         }
 
-        // H) OCULTAR BOTÓN REGALOS
+        // H) Ocultar Regalos
         const enlaces = document.querySelectorAll('a');
         enlaces.forEach(link => {
             if (link.innerText.includes("Lista de regalos")) {
@@ -9265,7 +9272,7 @@
             }
         });
 
-        // K) DEGRADADO Y COLOR
+        // K) Degradado y Color
         const degradado = document.querySelector('[data-framer-name="degradado"]');
         if (degradado) {
             degradado.style.background = 'transparent'; 
@@ -9281,7 +9288,7 @@
             }
         });
 
-        // L) SECCIÓN INVITADOS (Mensaje general)
+        // L) Sección Invitados
         const cajaInvitados = document.querySelector('.framer-3ixax7');
         if (cajaInvitados) {
             if (!cajaInvitados.innerText.includes("¡NOS ENCANTARÍA")) {
@@ -9291,36 +9298,49 @@
                 cajaInvitados.innerHTML = `
                     <div style="width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 15px; box-sizing: border-box;">
                         <div style="font-family: 'Inria Serif', serif; font-weight: bold; text-transform: uppercase; color: rgb(97, 56, 34); font-size: 12px; margin-bottom: 5px; text-align: center; line-height: 1.2em; max-width: 100%; word-wrap: break-word;">
-                            ¡NOS ENCANTARÍA QUE NOS ACOMPAÑES!
+                            ¡NOS ENCANTARÍA <br> QUE NOS ACOMPAÑES!
                         </div>
                         <div style="font-family: 'Inria Serif', serif; font-size: 11px; color: rgb(0, 0, 0); text-align: center;">
-                            Esperamos contar con tu presencia
+                            Esperamos contar con <br> tu presencia
                         </div>
                     </div>
                 `;
             }
         }
 
-        // --- M) CORRECCIÓN CALENDARIO (MARZO 2026) ---
-        // Elimina el espacio vacío inicial para que el día 1 sea Domingo y el 21 sea Sábado.
+        // M) Corrección Calendario
         const contenedorCalendario = document.querySelector('.framer-1nzzlg6-container');
         if (contenedorCalendario) {
-            // Buscamos el segundo grid (el primero es el header de los días)
             const grids = contenedorCalendario.querySelectorAll('div[style*="display: grid"]');
             if (grids.length >= 2) {
                 const gridDias = grids[1]; 
                 const primerHijo = gridDias.firstElementChild;
-                // Si el primer elemento es un div vacío (sin texto), lo ocultamos
                 if (primerHijo && primerHijo.innerText.trim() === "") {
                     primerHijo.style.display = 'none';
                 }
             }
         }
+
+        // --- N) NUEVO: CAMBIO DE LINKS MAPAS ---
+        
+        // 1. Mapa Iglesia (framer-1hqeca7)
+        const botonMapa1 = document.querySelector('a.framer-1hqeca7');
+        if (botonMapa1) {
+            // Reemplaza aquí con el link de la Capilla de Nápoles
+            botonMapa1.href = "https://maps.app.goo.gl/yuXUhuYWjUuJXB8z7"; 
+        }
+
+        // 2. Mapa Recepción (framer-1410khc)
+        const botonMapa2 = document.querySelector('a.framer-1410khc');
+        if (botonMapa2) {
+            // Reemplaza aquí con el link de Cascada Garden
+            botonMapa2.href = "https://maps.app.goo.gl/nZG3Hp2TPh5WRMmr6?g_st=aw"; 
+        }
     }
 
-    // Ejecución
+    // Ejecución RÁPIDA
     forzarCambios();
-    setInterval(forzarCambios, 500); 
+    setInterval(forzarCambios, 50); 
 </script>
     </body>
 </html>
